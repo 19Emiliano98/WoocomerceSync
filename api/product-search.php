@@ -96,6 +96,10 @@ try {
     $producto = null;
     $wooProducto = null;
 
+    // Timing para debug
+    $startTime = microtime(true);
+    $timings = [];
+
     // Usar servicios si están disponibles
     if (class_exists('\App\Container') && \App\Container::isBooted()) {
         $repository = \App\Container::get(\App\Sige\ProductRepository::class);
@@ -103,10 +107,14 @@ try {
         $mapper = \App\Container::get(\App\WooCommerce\ProductMapper::class);
 
         // 1. Buscar en SIGE
+        $t1 = microtime(true);
         $producto = $repository->findBySku($sku);
+        $timings['sige'] = microtime(true) - $t1;
 
         // 2. Buscar en WooCommerce
+        $t2 = microtime(true);
         $wcProduct = $wcClient->findBySku($sku);
+        $timings['woocommerce'] = microtime(true) - $t2;
         if ($wcProduct !== null) {
             $wooProducto = $mapper->extractWooSummary($wcProduct);
             // Agregar campos adicionales directamente del producto WOO
@@ -131,6 +139,8 @@ try {
         }
     } else {
         // Fallback al código original - usar conexión de sesión
+        $t1 = microtime(true);
+
         $dbService = getSigeConnection();
         $db = $dbService->getConnection();
 
@@ -210,8 +220,11 @@ try {
         $stmt->close();
         $db->close();
 
+        $timings['sige'] = microtime(true) - $t1;
+
         // Buscar en WooCommerce (comparación exacta de SKU)
         // Primero intentar búsqueda normal
+        $t2 = microtime(true);
         $wcProducts = wcRequest('/products?sku=' . urlencode($sku));
 
         if (!empty($wcProducts)) {
@@ -261,6 +274,8 @@ try {
                 }
             }
         }
+
+        $timings['woocommerce'] = microtime(true) - $t2;
     }
 
     // Responder
@@ -273,7 +288,12 @@ try {
     $response = [
         'success' => true,
         'producto' => $producto,
-        'woo_producto' => $wooProducto
+        'woo_producto' => $wooProducto,
+        '_timings' => [
+            'sige_ms' => isset($timings['sige']) ? round($timings['sige'] * 1000, 2) : null,
+            'woocommerce_ms' => isset($timings['woocommerce']) ? round($timings['woocommerce'] * 1000, 2) : null,
+            'total_ms' => round((microtime(true) - $startTime) * 1000, 2)
+        ]
     ];
 
     // Buscar datos en ML si se solicitó
