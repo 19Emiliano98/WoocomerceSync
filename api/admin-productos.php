@@ -900,7 +900,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Sin imágenes -->
                             <div id="noImagesMsgPublish" style="display: none; text-align: center; color: #64748b; font-size: 12px; padding: 10px;">
-                                No se encontraron imágenes en ML
+                                No se han encontrado imágenes
                             </div>
                         </div>
 
@@ -1012,7 +1012,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Sin imágenes -->
                             <div class="no-images-msg" id="noImagesMsg" style="display: none; text-align: center; color: #64748b; font-size: 12px; padding: 10px;">
-                                No se encontraron imágenes en ML
+                                No se han encontrado imágenes
                             </div>
 
                             <!-- Imágenes actuales en WooCommerce -->
@@ -1812,7 +1812,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                     imagesEl.style.display = 'block';
                 } else {
-                    addLog('⚠️ No se encontraron imágenes en ML', 'warning');
+                    addLog('⚠️ No se han encontrado imágenes', 'warning');
                     noImagesEl.style.display = 'block';
                     imagenesParaPublicar = [];
                 }
