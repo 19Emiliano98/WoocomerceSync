@@ -93,6 +93,9 @@ try {
     }
 
     // 3. Buscar en Mercado Libre si no tiene imagen en SIGE
+    // DESHABILITADO TEMPORALMENTE: Mercado Libre queda fuera del proceso de búsqueda por SKU.
+    // Se comenta el bloque completo (sin borrar la lógica) para poder reactivarlo más adelante.
+    /*
     if (empty($response['imagenes']['sige'])) {
         $resultadoML = buscarImagenesConFallback(
             $articulo['sku'],
@@ -110,6 +113,7 @@ try {
             ];
         }
     }
+    */
 
     // 4. Verificar imágenes actuales en WooCommerce
     try {

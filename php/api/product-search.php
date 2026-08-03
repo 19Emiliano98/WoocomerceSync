@@ -187,6 +187,9 @@ try {
     ];
 
     // Buscar datos en ML si se solicitó
+    // DESHABILITADO TEMPORALMENTE: Mercado Libre queda fuera del proceso de búsqueda por SKU.
+    // Se comenta el bloque completo (sin borrar la lógica) para poder reactivarlo más adelante.
+    /*
     if ($searchML && $producto !== null) {
         $datosML = buscarDatosProductoML(
             $producto['sku'],
@@ -206,6 +209,7 @@ try {
             ];
         }
     }
+    */
 
     // Limpiar buffer antes de enviar respuesta
     ob_end_clean();

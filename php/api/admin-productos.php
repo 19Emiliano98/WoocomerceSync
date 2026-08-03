@@ -859,7 +859,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Cargando -->
                             <div id="loadingImagesPublish" style="display: none; text-align: center; padding: 10px;">
-                                <span class="spinner"></span> Buscando imágenes en ML...
+                                <span class="spinner"></span> Buscando imágenes...
                             </div>
 
                             <!-- Imágenes encontradas -->
@@ -963,7 +963,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Cargando -->
                             <div class="loading-images" id="loadingImages" style="display: none; text-align: center; padding: 10px;">
-                                <span class="spinner"></span> Buscando imágenes en ML...
+                                <span class="spinner"></span> Buscando imágenes...
                             </div>
 
                             <!-- Imágenes de Mercado Libre -->
@@ -1661,7 +1661,7 @@ header('Content-Type: text/html; charset=utf-8');
             imagesEl.style.display = 'none';
             noImagesEl.style.display = 'none';
 
-            addLog('Buscando imágenes en ML...', '');
+            addLog('Buscando imágenes...', '');
 
             try {
                 const response = await fetch(`${API_BASE}/image-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}`);
@@ -1707,8 +1707,8 @@ header('Content-Type: text/html; charset=utf-8');
             } catch (error) {
                 loadingEl.style.display = 'none';
                 noImagesEl.style.display = 'block';
-                noImagesEl.innerHTML = `<span style="color: #ef4444;">Error buscando imágenes: ${error.message}</span>`;
-                addLog(`✗ Error: ${error.message}`, 'error');
+                noImagesEl.innerHTML = `<span style="color: #94a3b8;">No se han buscado imágenes</span>`;
+                addLog('No se han buscado imágenes', '');
             }
         }
 
@@ -1982,7 +1982,7 @@ header('Content-Type: text/html; charset=utf-8');
             } catch (error) {
                 loading.style.display = 'none';
                 if (noMsg) {
-                    noMsg.textContent = 'Error buscando imágenes';
+                    noMsg.textContent = 'No se han buscado imágenes';
                     noMsg.style.display = 'block';
                 }
             }
@@ -2830,8 +2830,8 @@ header('Content-Type: text/html; charset=utf-8');
                     noMsg.textContent = '⏱ Tiempo de espera agotado buscando imágenes';
                     addLog('⏱ Tiempo de espera agotado buscando imágenes', '');
                 } else {
-                    noMsg.textContent = 'Error: ' + error.message;
-                    addLog('✗ Error buscando imágenes: ' + error.message, 'error');
+                    noMsg.textContent = 'No se han buscado imágenes';
+                    addLog('No se han buscado imágenes', '');
                 }
             }
         }
