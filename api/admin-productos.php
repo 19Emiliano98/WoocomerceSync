@@ -882,7 +882,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Cargando -->
                             <div id="loadingImagesPublish" style="display: none; text-align: center; padding: 10px;">
-                                <span class="spinner"></span> Buscando imágenes en ML...
+                                <span class="spinner"></span> Buscando imágenes...
                             </div>
 
                             <!-- Imágenes encontradas -->
@@ -994,7 +994,7 @@ header('Content-Type: text/html; charset=utf-8');
 
                             <!-- Cargando -->
                             <div class="loading-images" id="loadingImages" style="display: none; text-align: center; padding: 10px;">
-                                <span class="spinner"></span> Buscando imágenes en ML...
+                                <span class="spinner"></span> Buscando imágenes...
                             </div>
 
                             <!-- Imágenes de Mercado Libre -->
@@ -1768,7 +1768,7 @@ header('Content-Type: text/html; charset=utf-8');
             imagesEl.style.display = 'none';
             noImagesEl.style.display = 'none';
 
-            addLog('Buscando imágenes en ML...', '');
+            addLog('Buscando imágenes...', '');
 
             try {
                 const response = await fetch(`${API_BASE}/image-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}`);
