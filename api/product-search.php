@@ -10,6 +10,9 @@ ob_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
+// Timing desde el inicio
+$startTime = microtime(true);
+
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -96,9 +99,10 @@ try {
     $producto = null;
     $wooProducto = null;
 
-    // Timing para debug
-    $startTime = microtime(true);
     $timings = [];
+
+    // Timing de bootstrap
+    $timingBootstrap = microtime(true) - $startTime;
 
     // Usar servicios si están disponibles
     if (class_exists('\App\Container') && \App\Container::isBooted()) {
@@ -290,6 +294,7 @@ try {
         'producto' => $producto,
         'woo_producto' => $wooProducto,
         '_timings' => [
+            'bootstrap_ms' => round($timingBootstrap * 1000, 2),
             'sige_ms' => isset($timings['sige']) ? round($timings['sige'] * 1000, 2) : null,
             'woocommerce_ms' => isset($timings['woocommerce']) ? round($timings['woocommerce'] * 1000, 2) : null,
             'total_ms' => round((microtime(true) - $startTime) * 1000, 2)
