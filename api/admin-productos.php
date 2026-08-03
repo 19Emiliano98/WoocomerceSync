@@ -1682,6 +1682,7 @@ header('Content-Type: text/html; charset=utf-8');
                 // Si no se busca en ML, mostrar estado final sin ML
                 if (!tieneDescSige && descContainer) {
                     descContainer.innerHTML = `<div style="color: #f59e0b; font-size: 12px;">⚠️ Sin descripción en SIGE (búsqueda en ML deshabilitada)</div>`;
+                    document.getElementById('pubDescLarga').textContent = '(Sin descripción)';
                 }
                 if (!tieneDimSige && dimContainer) {
                     dimContainer.innerHTML = `<span style="color: #f59e0b;">⚠️ Sin dimensiones</span>`;
