@@ -794,6 +794,12 @@ header('Content-Type: text/html; charset=utf-8');
                     <input type="text" id="skuInput" placeholder="Ingresá el SKU del producto..." onkeypress="if(event.key==='Enter')debouncedBuscarProducto()">
                     <button onclick="debouncedBuscarProducto()" id="searchBtn">Buscar</button>
                 </div>
+                <div style="margin-top: 10px; padding: 10px; background: #1e293b; border-radius: 6px; border: 1px solid #334155;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #e2e8f0; margin: 0;">
+                        <input type="checkbox" id="searchMLCheckbox" style="cursor: pointer; width: 16px; height: 16px;">
+                        <span>Incluir búsqueda en Mercado Libre</span>
+                    </label>
+                </div>
                 <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155; font-size: 11px; color: #64748b;">
                     <div style="margin-bottom: 6px;">💡 Ingresá el código SKU del producto para:</div>
                     <ul style="margin: 0; padding-left: 16px; line-height: 1.8;">
@@ -1186,8 +1192,11 @@ header('Content-Type: text/html; charset=utf-8');
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 30000);
 
+                // Leer si se debe buscar en Mercado Libre
+                const searchML = document.getElementById('searchMLCheckbox').checked ? '1' : '0';
+
                 // Buscar producto en SIGE y WooCommerce
-                const response = await fetch(`${API_BASE}/product-search.php?sku=${encodeURIComponent(sku)}&api_key=${API_KEY}`, {
+                const response = await fetch(`${API_BASE}/product-search.php?sku=${encodeURIComponent(sku)}&api_key=${API_KEY}&searchML=${searchML}`, {
                     signal: controller.signal,
                     cache: 'no-store'
                 });
@@ -1771,7 +1780,7 @@ header('Content-Type: text/html; charset=utf-8');
             addLog('Buscando imágenes...', '');
 
             try {
-                const response = await fetch(`${API_BASE}/image-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}`);
+                const response = await fetch(`${API_BASE}/image-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}&searchML=${document.getElementById('searchMLCheckbox').checked ? '1' : '0'}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -2032,7 +2041,7 @@ header('Content-Type: text/html; charset=utf-8');
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const response = await fetch(`${API_BASE}/image-search.php?sku=${encodeURIComponent(productoActual.sku)}&api_key=${API_KEY}`, {
+                const response = await fetch(`${API_BASE}/image-search.php?sku=${encodeURIComponent(productoActual.sku)}&api_key=${API_KEY}&searchML=${document.getElementById('searchMLCheckbox').checked ? '1' : '0'}`, {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
@@ -2912,7 +2921,7 @@ header('Content-Type: text/html; charset=utf-8');
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const response = await fetch(`${API_BASE}/image-search.php?sku=${encodeURIComponent(productoActual.sku)}&api_key=${API_KEY}`, {
+                const response = await fetch(`${API_BASE}/image-search.php?sku=${encodeURIComponent(productoActual.sku)}&api_key=${API_KEY}&searchML=${document.getElementById('searchMLCheckbox').checked ? '1' : '0'}`, {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);

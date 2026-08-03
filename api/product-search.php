@@ -83,8 +83,8 @@ function wcRequest($endpoint, $method = 'GET', $data = null) {
 }
 
 $sku = trim($_GET['sku'] ?? '');
-// Buscar en ML siempre (automático)
-$searchML = !isset($_GET['search_ml']) || $_GET['search_ml'] !== 'false';
+// Leer parámetro searchML del frontend (1 = sí buscar en ML, 0 = no buscar)
+$searchML = isset($_GET['searchML']) && $_GET['searchML'] === '1';
 
 if (empty($sku)) {
     http_response_code(400);
@@ -277,9 +277,6 @@ try {
     ];
 
     // Buscar datos en ML si se solicitó
-    // DESHABILITADO TEMPORALMENTE: Mercado Libre queda fuera del proceso de búsqueda por SKU.
-    // Se comenta el bloque completo (sin borrar la lógica) para poder reactivarlo más adelante.
-    /*
     if ($searchML && $producto !== null) {
         $datosML = buscarDatosProductoML(
             $producto['sku'],
@@ -299,7 +296,6 @@ try {
             ];
         }
     }
-    */
 
     // Limpiar buffer antes de enviar respuesta
     ob_end_clean();

@@ -127,6 +127,7 @@ if ($apiKey !== $expectedKey) {
 
 // Obtener parámetros
 $sku = trim($_GET['sku'] ?? '');
+$searchML = isset($_GET['searchML']) && $_GET['searchML'] === '1';
 
 if (empty($sku)) {
     http_response_code(400);
@@ -189,11 +190,8 @@ try {
         ];
     }
 
-    // 3. Buscar en Mercado Libre si no tiene imagen en SIGE
-    // DESHABILITADO TEMPORALMENTE: Mercado Libre queda fuera del proceso de búsqueda por SKU.
-    // Se comenta el bloque completo (sin borrar la lógica) para poder reactivarlo más adelante.
-    /*
-    if (empty($response['imagenes']['sige'])) {
+    // 3. Buscar en Mercado Libre si no tiene imagen en SIGE (solo si está habilitado)
+    if ($searchML && empty($response['imagenes']['sige'])) {
         $resultadoML = buscarImagenesConFallback(
             $articulo['sku'],
             $articulo['part_number'],
@@ -210,7 +208,6 @@ try {
             ];
         }
     }
-    */
 
     // 4. Verificar imágenes actuales en WooCommerce
     try {
