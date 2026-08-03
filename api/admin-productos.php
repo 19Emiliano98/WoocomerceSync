@@ -1675,7 +1675,22 @@ header('Content-Type: text/html; charset=utf-8');
                 dimContainer.innerHTML = `<span style="color: #22c55e;">✓ SIGE: ${dims.join(' | ')}</span>`;
             }
 
-            // Mostrar estado de búsqueda en ML (siempre buscamos para tener descripción corta)
+            // Buscar en ML solo si el checkbox está marcado
+            const searchML = document.getElementById('searchMLCheckbox').checked;
+
+            if (!searchML) {
+                // Si no se busca en ML, mostrar estado final sin ML
+                if (!tieneDescSige && descContainer) {
+                    descContainer.innerHTML = `<div style="color: #f59e0b; font-size: 12px;">⚠️ Sin descripción en SIGE (búsqueda en ML deshabilitada)</div>`;
+                }
+                if (!tieneDimSige && dimContainer) {
+                    dimContainer.innerHTML = `<span style="color: #f59e0b;">⚠️ Sin dimensiones</span>`;
+                }
+                addLog('Búsqueda en ML deshabilitada', 'info');
+                return;
+            }
+
+            // Mostrar estado de búsqueda en ML
             if (!tieneDescSige && descContainer) {
                 descContainer.innerHTML = `<div style="color: #94a3b8; font-size: 12px;">⏳ Buscando en ML...</div>`;
             }
@@ -1688,7 +1703,7 @@ header('Content-Type: text/html; charset=utf-8');
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-                const response = await fetch(`${API_BASE}/product-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}&search_ml=true`, {
+                const response = await fetch(`${API_BASE}/product-search.php?api_key=${API_KEY}&sku=${encodeURIComponent(productoActual.sku)}&searchML=1`, {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
