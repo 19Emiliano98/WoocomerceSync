@@ -1225,6 +1225,15 @@ header('Content-Type: text/html; charset=utf-8');
                 productoActual = data.producto;
                 wooProducto = data.woo_producto;
 
+                // Mostrar timings de búsqueda
+                if (data._timings) {
+                    console.log('⏱️ Timings:', data._timings);
+                    const timings = data._timings;
+                    if (timings.sige_ms && timings.woocommerce_ms) {
+                        addLog(`⏱️ SIGE: ${timings.sige_ms}ms | WooCommerce: ${timings.woocommerce_ms}ms | Total: ${timings.total_ms}ms`, '');
+                    }
+                }
+
                 // Determinar si es alta o modificación
                 esAlta = (wooProducto === null);
 
